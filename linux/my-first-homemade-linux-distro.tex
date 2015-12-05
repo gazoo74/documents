@@ -1,0 +1,151 @@
+%% my-first-homemade-linux-distro.tex
+%% Copyright 2015 Gaël PORTAY <gael.portay@gmail.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Gaël PORTAY.
+%
+% This work consists of the file my-first-homemade-linux-distro.tex.
+
+\documentclass[a4paper]{article}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+
+\lstloadlanguages{[ANSI]C,sh,make}
+
+\title{Ma première distribution Linux faite maison}
+\author{Gaël PORTAY}
+\date{\today}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\begin{abstract}
+Je suis ingénieur en informatique, spécialisé en \textit{Linux Embarqué}. J'ai découvert l'informatique à l'âge de 10 ans. Aujourd'hui je totalise un peu plus de 6 ans d’expérience dans le monde professionnel. Je suis passionné et curieux : j'aime apprendre et comprendre comment fonctionne les «~choses~». Je suis également autodidacte et j'aime partager mes expériences et mes connaissances avec les autres.\\
+
+Mon travail étant la partie immergée de l'iceberg, il est par conséquent assez difficile de montrer le fruit de mon travail par des images ou des photos. En lieu et place\footnote{Plus tard, j'illustrerai mes propos par quelques schémas.}, j'expliquerai comment et avec quels outils j'ai réalisé mes travaux. De même, certains de mes développements étant du domaine du propriétaire, je ne présenterai ici que mes développements libres.\\
+
+Je mets en évidence deux projets pour démontrer mes compétences : le \textit{BSP}\footnote{Board Support Package : le logiciel bas niveau d'une carte électronique.} pour la partie électronique ainsi que la partie système d'exploitation au niveau noyau ; et deux projets personnels pour la partie système d'exploitation au niveau espace utilisateur. L'annexe montre mon implication vis-à-vis de la communauté du Logiciel Libre.\\
+
+Voici une liste non exhaustive de mes compétences : langage \textit{C/C++} (libc, STL), mécanisme de \textit{polling} (epoll), \textit{Git}, \textit{Systèmes Linux} (espace utilisateur et noyau), scripts \textit{Shell} (POSIX, redirection, pipe...), \textit{Python}, \textit{Makefile}, \textit{Autotools}, \textit{Kconfig}, \textit{Yocto}, \textit{crosstool-ng}, \textit{QEMU}...
+\end{abstract}
+
+\clearpage
+\tableofcontents
+
+\clearpage
+\part{\href{https://fr.wikipedia.org/wiki/Board_support_package}{Board Support Package}}
+
+\section{Kernel}
+
+\begin{figure}
+\label{makefile:linux_download}
+\lstset{language=make,numbers=left,tabsize=2}
+\begin{lstlisting}
+kernel_download linux_download:
+	wget -qO- https://www.kernel.org/index.html\
+		| sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1\
+		| tar xvJ \&\& ln -sf linux-\2 linux,p'\$
+		| sh
+\end{lstlisting}
+\caption{Makefile : règle toute faite pour télécharger et extraire la dernière version stable du noyau Linux.}
+\end{figure}
+
+Entrons directement dans le vif du sujet, et attaquons par la compilation du noyau ! Je n'aborderai pas ici les concepts de la \textit{compilation croisée}. Nous allons simplement compilé un noyau pour l'architecture (la machine) sur laquelle vous travaillez actuellement. Nous émulerons le noyau par la suite avec \textit{QEMU}.\\
+
+Allons sur le site \href{http://www.kernel.org}{kernel.org} et téléchargons la dernière version stable du noyau\footnote{A l'heure où j'écris ces lignes, la dernière version stable du noyau est la version 4.3.}. La figure~\ref{makefile:linux_download} montre une règle \textit{Makefile} permettant d'automatiser le téléchargement et le désarchivage de la dernière version stable du noyau. Vous pouvez la réutiliser en faisant un copier/coller dans un fichier \textit{Makefile} et ensuite executer la commande suivante \lstset{language=sh}\lstinline{make linux_download}.
+
+\begin{figure}
+\label{makefile:linux_download}
+\begin{verbatim}
+$ make linux_download 
+wget -qO- https://www.kernel.org/index.html | sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1 | tar xvJ \&\& ln -sf linux-\2 linux,p' | sh
+linux-4.3/
+linux-4.3/.get_maintainer.ignore
+linux-4.3/.gitignore
+linux-4.3/.mailmap
+(...)
+linux-4.3/virt/kvm/kvm_main.c
+linux-4.3/virt/kvm/vfio.c
+linux-4.3/virt/kvm/vfio.h
+\end{verbatim}
+\caption{Makefile : règle toute faite pour télécharger et extraire la dernière version stable du noyau Linux.}
+\end{figure}
+
+Pour le reste de ce tutoriel, nous supposons que les fichiers sources sont dans le repertoire \textbf{./linux}.\\
+
+Nous y voilà, nous somme fin prêt pour compiler notre premier noyau, exitez non ?
+
+%\begin{figure}
+%\label{shell:first_make}
+\begin{verbatim}
+$ cd linux
+$ make
+(...)
+\end{verbatim}
+%\caption{make : première tentative...}
+%\end{figure}
+
+C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! Linux est une noyau \textit{monolithyque} \textit{modulaire} qui supporte plusieurs \texit{plateformes} (promis, je ne voulais pas offenser). Comprenez simplement que le projet à besoin d'être configuré avant d'être compilée avec un simple \lstset{language=sh}\lstinline{make}.\\
+make tinyconfig
+
+\begin{figure}
+\begin{verbatim}
+$ make
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  SHIPPED scripts/kconfig/zconf.tab.c
+  SHIPPED scripts/kconfig/zconf.lex.c
+  SHIPPED scripts/kconfig/zconf.hash.c
+  HOSTCC  scripts/kconfig/zconf.tab.o
+  HOSTLD  scripts/kconfig/conf
+scripts/kconfig/conf  --silentoldconfig Kconfig
+***
+*** Configuration file ".config" not found!
+***
+*** Please run some configurator (e.g. "make oldconfig" or
+*** "make menuconfig" or "make xconfig").
+***
+scripts/kconfig/Makefile:37: recipe for target 'silentoldconfig' failed
+make[2]: *** [silentoldconfig] Error 1
+Makefile:531: recipe for target 'silentoldconfig' failed
+make[1]: *** [silentoldconfig] Error 2
+  SYSTBL  arch/x86/entry/syscalls/../../include/generated/asm/syscalls_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_64.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_x32.h
+  HOSTCC  arch/x86/tools/relocs_32.o
+  HOSTCC  arch/x86/tools/relocs_64.o
+  HOSTCC  arch/x86/tools/relocs_common.o
+  HOSTLD  arch/x86/tools/relocs
+make: *** No rule to make target 'include/config/auto.conf', needed by 'include/config/kernel.release'.  Stop.
+\end{verbatim}
+\caption{}
+\end{figure}
+
+\clearpage
+\appendix
+
+\section{Contributions}
+
+\clearpage
+\listoffigures
+
+\clearpage
+\listoftables
+
+\end{document}

@@ -62,7 +62,7 @@ Entrons directement dans le vif du sujet et attaquons par la compilation du noya
 
 \underline{Remarque} : je n'aborderai pas ici les concepts de la \textit{compilation croisée}. «~La compilation quoi ?!? croisée ?!?~». Bon, le plus simple c'est d'aller sur \href{https://fr.wikipedia.org/wiki/Compilateur#Compilation_crois.C3.A9e}{Wikipédia}. En gros, on compile quelque chose pour une architecture\footnote{Par architecture, comprenez processeur.}  cible autre que celle sur laquelle on est entrain de compiler. Vous y êtes toujours pas ?!? Plus simplement, on compile quelque chose sur notre PC \textit{Intel} (\textit{x86}) destiné à être utiliser sur notre \textit{Raspberry-PI} flambant neuf (\textit{ARM}). C'est bon vous y êtes ?!? Avec un exemple c'est toujours plus facile à comprendre...\\
 
-Nous allons simplement compilé un noyau pour l'architecture (la machine) sur laquelle vous travaillez actuellement. Nous émulerons le noyau par la suite avec \textit{QEMU}.\\
+Nous allons simplement compiler un noyau pour l'architecture (la machine) sur laquelle vous travaillez actuellement. Nous émulerons le noyau par la suite avec \textit{QEMU}.\\
 
 Allons sur le site \href{http://www.kernel.org}{kernel.org} pout télécharger la dernière version stable du noyau\footnote{A l'heure où j'écris ces lignes, la dernière version stable du noyau est la version 4.3.}. La figure~\ref{makefile:linux_download} montre une règle \textit{Makefile} permettant d'automatiser le téléchargement et le désarchivage de la dernière version stable du noyau. Vous pouvez la réutiliser en faisant un copier/coller dans un fichier \textit{Makefile} et ensuite executer la commande suivante : \lstset{language=sh}\lstinline{make linux_download}.\\
 
@@ -112,18 +112,29 @@ On aura remarqué le message suivant lorsque la première commande \lstset{langu
 *** "make menuconfig" or "make xconfig").
 ***
 \end{verbatim}
-... le fichier \textbf{.config}, qui contient la configuration du noyau, est manquant ! Bien entendu, les sources du noyau viennent sans aucune configuration. Il va donc falloir généré cette configuration.
+Le fichier \textbf{.config}, qui contient la configuration du noyau, est manquant ! Bien entendu, les sources du noyau viennent sans aucune configuration. Il va donc falloir généré cette configuration.\\
 
 Ce fichier est une simple définition des options qui seront compilés ou non, soit intégré à l'image du noyau soit disponible dans une module.
 \begin{verbatim}
-# Un commentaire commence par un '#'
-# une option CONFIG_xxx peut prendre les 3 valeurs ci-dessous:
+# Un commentaire commence par un '#' (cette ligne est donc un commentaire).
+#
+# Une option est prefixée par 'CONFIG_'. Une option peut prendre peut prendre les 3 valeurs ci-dessous:
 # - y pour yes : compilé et intégré dans le noyau
 # - m pour module : compilé et peut être chargé (déchargé) via insmod/modprobe (rmmod)
 # - # CONFIG_xxx is not set (ou n) : 
 CONFIG_xxx=y
 CONFIG_xxx=m
 # CONFIG_xxx is not set
+
+# booléen
+CONFIG_xxx = y
+# CONFIG_xxx is not set
+
+# string
+CONFIG_xxx = "une simple chaine de caractères"
+
+# integer
+CONFIG_xxx = 123
 \end{verbatim}
 
 Allez on se fait une petite frailleur ?!?
@@ -164,7 +175,7 @@ make[1]: *** [silentoldconfig] Error 2
   HOSTLD  arch/x86/tools/relocs
 make: *** No rule to make target 'include/config/auto.conf', needed by 'include/config/kernel.release'.  Stop.
 \end{verbatim}
-\caption{}
+\caption{make - oops}
 \end{figure}
 
 \clearpage

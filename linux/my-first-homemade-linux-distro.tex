@@ -35,22 +35,15 @@
 \maketitle
 
 \begin{abstract}
-Je suis ingénieur en informatique, spécialisé en \textit{Linux Embarqué}. J'ai découvert l'informatique à l'âge de 10 ans. Aujourd'hui je totalise un peu plus de 6 ans d’expérience dans le monde professionnel. Je suis passionné et curieux : j'aime apprendre et comprendre comment fonctionne les «~choses~». Je suis également autodidacte et j'aime partager mes expériences et mes connaissances avec les autres.\\
-
-Mon travail étant la partie immergée de l'iceberg, il est par conséquent assez difficile de montrer le fruit de mon travail par des images ou des photos. En lieu et place\footnote{Plus tard, j'illustrerai mes propos par quelques schémas.}, j'expliquerai comment et avec quels outils j'ai réalisé mes travaux. De même, certains de mes développements étant du domaine du propriétaire, je ne présenterai ici que mes développements libres.\\
-
-Je mets en évidence deux projets pour démontrer mes compétences : le \textit{BSP}\footnote{Board Support Package : le logiciel bas niveau d'une carte électronique.} pour la partie électronique ainsi que la partie système d'exploitation au niveau noyau ; et deux projets personnels pour la partie système d'exploitation au niveau espace utilisateur. L'annexe montre mon implication vis-à-vis de la communauté du Logiciel Libre.\\
-
-Voici une liste non exhaustive de mes compétences : langage \textit{C/C++} (libc, STL), mécanisme de \textit{polling} (epoll), \textit{Git}, \textit{Systèmes Linux} (espace utilisateur et noyau), scripts \textit{Shell} (POSIX, redirection, pipe...), \textit{Python}, \textit{Makefile}, \textit{Autotools}, \textit{Kconfig}, \textit{Yocto}, \textit{crosstool-ng}, \textit{QEMU}...
 \end{abstract}
 
 \clearpage
 \tableofcontents
 
 \clearpage
-\part{\href{https://fr.wikipedia.org/wiki/Board_support_package}{Board Support Package}}
+\part{Le Kernel}
 
-\section{Kernel}
+\section{Ma première compilation}
 
 \begin{figure}
 \label{makefile:linux_download}
@@ -65,12 +58,16 @@ kernel_download linux_download:
 \caption{Makefile : règle toute faite pour télécharger et extraire la dernière version stable du noyau Linux.}
 \end{figure}
 
-Entrons directement dans le vif du sujet, et attaquons par la compilation du noyau ! Je n'aborderai pas ici les concepts de la \textit{compilation croisée}. Nous allons simplement compilé un noyau pour l'architecture (la machine) sur laquelle vous travaillez actuellement. Nous émulerons le noyau par la suite avec \textit{QEMU}.\\
+Entrons directement dans le vif du sujet et attaquons par la compilation du noyau !\\
 
-Allons sur le site \href{http://www.kernel.org}{kernel.org} et téléchargons la dernière version stable du noyau\footnote{A l'heure où j'écris ces lignes, la dernière version stable du noyau est la version 4.3.}. La figure~\ref{makefile:linux_download} montre une règle \textit{Makefile} permettant d'automatiser le téléchargement et le désarchivage de la dernière version stable du noyau. Vous pouvez la réutiliser en faisant un copier/coller dans un fichier \textit{Makefile} et ensuite executer la commande suivante \lstset{language=sh}\lstinline{make linux_download}.
+\underline{Remarque} : je n'aborderai pas ici les concepts de la \textit{compilation croisée}. «~La compilation quoi ?!? croisée ?!?~». Bon, le plus simple c'est d'aller sur \href{https://fr.wikipedia.org/wiki/Compilateur#Compilation_crois.C3.A9e}{Wikipédia}. En gros, on compile quelque chose pour une architecture\footnote{Par architecture, comprenez processeur.}  cible autre que celle sur laquelle on est entrain de compiler. Vous y êtes toujours pas ?!? Plus simplement, on compile quelque chose sur notre PC \textit{Intel} (\textit{x86}) destiné à être utiliser sur notre \textit{Raspberry-PI} flambant neuf (\textit{ARM}). C'est bon vous y êtes ?!? Avec un exemple c'est toujours plus facile à comprendre...\\
+
+Nous allons simplement compilé un noyau pour l'architecture (la machine) sur laquelle vous travaillez actuellement. Nous émulerons le noyau par la suite avec \textit{QEMU}.\\
+
+Allons sur le site \href{http://www.kernel.org}{kernel.org} pout télécharger la dernière version stable du noyau\footnote{A l'heure où j'écris ces lignes, la dernière version stable du noyau est la version 4.3.}. La figure~\ref{makefile:linux_download} montre une règle \textit{Makefile} permettant d'automatiser le téléchargement et le désarchivage de la dernière version stable du noyau. Vous pouvez la réutiliser en faisant un copier/coller dans un fichier \textit{Makefile} et ensuite executer la commande suivante : \lstset{language=sh}\lstinline{make linux_download}.\\
 
 \begin{figure}
-\label{makefile:linux_download}
+\label{make:linux_download}
 \begin{verbatim}
 $ make linux_download 
 wget -qO- https://www.kernel.org/index.html | sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1 | tar xvJ \&\& ln -sf linux-\2 linux,p' | sh
@@ -83,12 +80,12 @@ linux-4.3/virt/kvm/kvm_main.c
 linux-4.3/virt/kvm/vfio.c
 linux-4.3/virt/kvm/vfio.h
 \end{verbatim}
-\caption{Makefile : règle toute faite pour télécharger et extraire la dernière version stable du noyau Linux.}
+\caption{Makefile : une règle toute faite pour télécharger et extraire la dernière version stable du noyau Linux.}
 \end{figure}
 
 Pour le reste de ce tutoriel, nous supposons que les fichiers sources sont dans le repertoire \textbf{./linux}.\\
 
-Nous y voilà, nous somme fin prêt pour compiler notre premier noyau, exitez non ?
+Nous y voilà, nous somme fin prêt pour compiler notre premier noyau, exitez non ? Allez, on est parti. Ouvrez un terminal si ce n'est pas déjà fait et : \lstset{language=sh}\lstinline{cd linux && make}... et...
 
 %\begin{figure}
 %\label{shell:first_make}
@@ -100,8 +97,41 @@ $ make
 %\caption{make : première tentative...}
 %\end{figure}
 
-C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! Linux est une noyau \textit{monolithyque} \textit{modulaire} qui supporte plusieurs \texit{plateformes} (promis, je ne voulais pas offenser). Comprenez simplement que le projet à besoin d'être configuré avant d'être compilée avec un simple \lstset{language=sh}\lstinline{make}.\\
-make tinyconfig
+C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! Linux est une noyau \textit{monolithyque} \textit{modulaire} qui supporte plusieurs \textit{plateformes} (promis, je ne voulais pas offenser). Comprenez simplement que le projet a besoin d'être configuré pour pouvoir être compilé avec un vulgaire \lstset{language=sh}\lstinline{make}.\\
+
+Linux utilise le language \textit{\href{https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt}{Kconfig}} pour décrire les options de configurations : ce sont les fichiers \textbf{Kconfig} présent un peu partout dans les sources.\\
+
+Il existe plusieurs \textit{front-ends} (ou interfaces) pour afficher le menu de configuration du noyau. Généralement, les développeurs utilisent la vielle interface en \textit{ncurses} que l'on appel via \lstset{language=sh}\lstinline{make menuconfig}.\\
+
+On aura remarqué le message suivant lorsque la première commande \lstset{language=sh}\lstinline{make} a échouée :
+\begin{verbatim}
+***
+*** Configuration file ".config" not found!
+***
+*** Please run some configurator (e.g. "make oldconfig" or
+*** "make menuconfig" or "make xconfig").
+***
+\end{verbatim}
+... le fichier \textbf{.config}, qui contient la configuration du noyau, est manquant ! Bien entendu, les sources du noyau viennent sans aucune configuration. Il va donc falloir généré cette configuration.
+
+Ce fichier est une simple définition des options qui seront compilés ou non, soit intégré à l'image du noyau soit disponible dans une module.
+\begin{verbatim}
+# Un commentaire commence par un '#'
+# une option CONFIG_xxx peut prendre les 3 valeurs ci-dessous:
+# - y pour yes : compilé et intégré dans le noyau
+# - m pour module : compilé et peut être chargé (déchargé) via insmod/modprobe (rmmod)
+# - # CONFIG_xxx is not set (ou n) : 
+CONFIG_xxx=y
+CONFIG_xxx=m
+# CONFIG_xxx is not set
+\end{verbatim}
+
+Allez on se fait une petite frailleur ?!?
+\begin{verbatim}
+$ make menuconfig
+ou
+$ make tinyconfig
+\end{verbatim}
 
 \begin{figure}
 \begin{verbatim}

@@ -178,7 +178,20 @@ CRC 61bf4503
 Kernel: arch/x86/boot/bzImage is ready  (#1)
 \end{verbatim}
 
-Notre tout premier noyau est disponible là : \textbf{arch/x86/boot/bzImage}.
+Notre tout premier noyau est disponible là : \textbf{arch/x86/boot/bzImage}. Nous allons tester cette image noyau, non pas directement avec notre machine, mais avec l'émulateur \textit{QEMU}.
+
+\clearpage
+\section{Émulation}
+
+Nous allons maintenant émuler notre noyau fraichement compilé avec \textit{QEMU} via la commande \lstset{language=sh}\lstinline{qemu-system-i386 -kernel arch/x86/boot/bzImage}.\\
+
+\begin{figure}
+\label{fig:qemu_first_run}
+\includegraphics[scale=0.5]{../res/qemu-first-run.png}
+\caption{qemu-system-i386 - Console \textit{QEMU}}
+\end{figure}
+
+Vous l'aurez remarqué, il ne se passe rien. La figure~\ref{fig:qemu_first_run} montre la console graphique ouverte par \textit{QEMU}. Nous allons rendre le noyau verbeux et afficher ses traces sur la console de \textit{QEMU} afin de comprendre ce qu'il se passe.
 
 \clearpage
 \listoffigures

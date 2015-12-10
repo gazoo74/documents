@@ -193,6 +193,36 @@ Nous allons maintenant émuler notre noyau fraichement compilé avec \textit{QEM
 
 Vous l'aurez remarqué, il ne se passe rien. La figure~\ref{fig:qemu_first_run} montre la console graphique ouverte par \textit{QEMU}. Nous allons rendre le noyau verbeux et afficher ses traces sur la console de \textit{QEMU} afin de comprendre ce qu'il se passe.
 
+\subsection{Noyau verbeux}
+
+\begin{figure}
+\label{fig:menuconfig_enable_printk}
+\includegraphics[scale=0.5]{../res/menuconfig-enable-printk.png}
+\caption{menuconfig - Support de \textit{printk}}
+\end{figure}
+
+Pour rendre le noyau plus verbeux, activons les traces \textit{printk}. Sous le menu \textbf{General Setup}, puis \textbf{Configure standard kernel features (expert users)}, cochons la case \textbf{Enable support for printk} comme illustré par la figure~\ref{fig:menuconfig_enable_printk}.\\
+
+\begin{figure}
+\label{fig:menuconfig_enable_tty}
+\includegraphics[scale=0.5]{../res/menuconfig-enable-tty.png}
+\caption{menuconfig - Support de \textit{TTY}}
+\end{figure}
+
+\begin{figure}
+\label{fig:menuconfig_enable_console}
+\includegraphics[scale=0.5]{../res/menuconfig-enable-console-on-8250-16550-serial-port.png}
+\caption{menuconfig - Support de la console sur port série \textit{8250/16550}}
+\end{figure}
+
+Ensuite, configurons le projet pour compiler les pilotes utilisés par la console de \textit{QEMU}. Sur un \textit{PC}, \textit{QEMU} émule un port série compatible \textit{8250/16550}. Sous le menu \textbf{Device Drivers} puis \textbf{Character devices  --->}, cochons la case \textbf{Enable TTY}. Et, sous le nouveau sous-menu \textbf{Serial drivers  --->} cochons également la case \textbf{8250/16550 and compatible serial support} puis \textbf{Console on 8250/16550 and compatible serial port}. Referez vous aux figures~\ref{fig:menuconfig_enable_console} et \ref{fig:menuconfig_enable_tty}.\\
+
+Deux nouveaux périphériques sont utilisables par le noyau :
+\begin{itemize}
+\item \textbf{console} et
+\item \textbf{ttySx} ou \textit{x} représente un entier définissant le numéro du port série.
+\end{itemize}
+
 \clearpage
 \listoffigures
 

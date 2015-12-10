@@ -38,6 +38,10 @@ kernel_menuconfig linux_menuconfig:
 
 kernel_tinyconfig linux_tinyconfig:
 
+menuconfig: linux_menuconfig
+
+tinyconfig: linux_tinyconfig
+
 kernel_% linux_%:
 	make -C linux $*
 

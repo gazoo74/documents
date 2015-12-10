@@ -11,8 +11,8 @@ all: doc
 doc kernel:
 	make -C $@
 
-.PHONY: linux_download linux_menuconfig
-linux_download linux_menuconfig:
+.PHONY: linux_download linux_menuconfig linux_tinyconfig
+linux_download linux_menuconfig linux_tinyconfig:
 	make -C kernel $@
 
 .PHONY: clean mrproper

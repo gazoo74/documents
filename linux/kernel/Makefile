@@ -38,6 +38,9 @@ kernel_download linux_download:
 .PHONY: kernel_menuconfig linux_menuconfig
 kernel_menuconfig linux_menuconfig:
 
+.PHONY: kernel_tinyconfig linux_tinyconfig
+kernel_tinyconfig linux_tinyconfig:
+
 kernel_% linux_%:
 	make -C linux $*
 

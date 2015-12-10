@@ -130,6 +130,30 @@ La figure~\ref{fig:make_menuconfig} montre le menu principal de configuration du
 
 Vous l'aurez vite compris, le noyau contient des milliers d'options et donc un nombre incalculable de configurations possibles ! Comment allons nous configurer notre noyau ?!? Quels sont les pilotes (\textit{drivers}) que nous devons compiler ?!?
 
+\subsection{tinyconfig}
+
+Nous allons créer une configuration minimal du noyau. Pour cela, nous invoquons la règle \textbf{tinyconfig}.
+
+\begin{verbatim}
+$ make tinyconfig
+scripts/kconfig/conf  --allnoconfig Kconfig
+#
+# configuration written to .config
+#
+Using .config as base
+Merging ./kernel/configs/tiny.config
+Value of CONFIG_CC_OPTIMIZE_FOR_SIZE is redefined by fragment ./kernel/configs/tiny.config:
+Previous value: # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+New value: CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+(...)
+*
+#
+# configuration written to .config
+#
+\end{verbatim}
+
+Le noyau est maintenant configuré ! Un fichier \textbf{.config} est créé à la racine du projet. Ce fichier contient une configuration strictement minimale du noyau.
+
 \clearpage
 \listoffigures
 

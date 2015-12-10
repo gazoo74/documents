@@ -1,0 +1,59 @@
+%% distro.tex
+%% Copyright 2015 Gaël PORTAY <gael.portay@gmail.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Gaël PORTAY.
+%
+% This work consists of the file distro.tex.
+
+\documentclass[a4paper]{article}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+
+\lstloadlanguages{[ANSI]C,sh,make}
+
+\title{Ma première distribution Linux faite maison}
+\author{Gaël PORTAY}
+\date{\today}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\tableofcontents
+
+\clearpage
+\part{Le noyau}
+
+\section{Première compilation}
+
+Entrons directement dans le vif du sujet et attaquons par la compilation d'un noyau \textit{Linux} ! Nous allons compiler un noyau pour l'architecture hôte : la machine sur laquelle vous travaillez actuellement\footnote{Dans un premier temps, je supposerai que vous travailler sur une machine à base de processeur \textit{Intel x86}. Les extraits de code disponibles à travers ce document sont donnés pour cette architecture. Si vous travaillez sur une autre architecture (exemple : \textit{PowerPC} (\textit{PPC})), vous devrez adapter ces extraits pour votre machine. J'adapterai ces extraits plus tard pour qu'ils soient génériques et puissent être utilisés sur n'importe quelle architecture.}.\\
+
+Je n'aborderai pas ici les concepts de la \textit{compilation croisée}. «~La compilation quoi ?!? croisée ?!?~». Hum... le plus simple est de consulter la page \textit{Wikipédia} sur la \textit{compilation croisée}\footnote{\url{https://fr.wikipedia.org/wiki/Compilateur\#Compilation\_crois.C3.A9e}}. Grosso modo, on compile un programme destiné à être exécuté sur une architecture cible autre que l'architecture hôte, celle sur laquelle on est entrain de compiler. Vous n'y êtes toujours pas ?!? Plus simplement, on compile quelque chose sur notre \textit{PC} à base de processeur \textit{Intel} (\textit{x86}) destiné à être utiliser sur un \textit{Raspberry-PI} (\textit{ARM}). C'est bon vous y êtes ?!? Avec un exemple c'est toujours plus facile à comprendre...\\
+
+Vous êtes prêts ?!? Alors c'est parti !\\
+
+\subsection{Les fichiers sources}
+
+Nous allons avoir besoin des fichiers sources de \textit{Linux}. Pour cela, rien de plus simple : allons sur le site \href{http://www.kernel.org}{kernel.org} pour télécharger la dernière version stable\footnote{A l'heure où j'écris ces lignes, la dernière version stable est la version 4.3.}.\\
+
+La règle \textit{Makefile}, ci-dessous, automatise le téléchargement et le désarchivage de la dernière version stable. Vous pouvez la réutiliser en effectuant un copier/coller dans un fichier \textit{Makefile} et ensuite exécuter la commande suivante : \lstset{language=sh}\lstinline{make linux_download}.\\
+
+\lstset{language=make}
+\lstinputlisting[firstline=32,lastline=35,breaklines]{../kernel/Makefile}
+
+Pour le reste de ce document, nous supperons que les fichiers sources sont dans le répertoire \textbf{./linux}.\\
+
+\end{document}

@@ -35,9 +35,8 @@ kernel_download linux_download:
 		| sed -n '/<td id="latest_link"/,/<\/td>/s,.*<a.*href="\(.*\)">\(.*\)</a>.*,wget -qO- \1 | tar xvJ \&\& ln -sf linux-\2 linux,p' \
 		| sh
 
+.PHONY: kernel_menuconfig linux_menuconfig
 kernel_menuconfig linux_menuconfig:
-
-kernel_tinyconfig linux_tinyconfig:
 
 kernel_% linux_%:
 	make -C linux $*

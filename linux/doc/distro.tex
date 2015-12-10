@@ -16,6 +16,8 @@
 % This work consists of the file distro.tex.
 
 \documentclass[a4paper]{article}
+\usepackage{caption}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage[T1]{fontenc}
@@ -113,5 +115,22 @@ Revenons à nos moutons... Lorsque notre première commande \lstset{language=sh}
 Le fichier \textbf{.config} est manquant ! Ce fichier contient la configuration du noyau. C'est une simple liste des options qui seront compilés ou non, intégré à l'image du noyau ou disponible via un module.\\
 
 Bien entendu, les sources du noyau viennent sans aucune configuration. Nous allons donc devoir générer cette configuration.\\
+
+\subsection{menuconfig}
+
+Allez, on se fait une petite frayeur : configurons notre noyau en exécutant la commande \lstinline{make menuconfig}\footnote{Nous allons avoir besoin du paquet de développement de \textit{ncurses}. Si vous n'y arrivez pas, passez simplement cette partie, elle n'est pas essentielle}.\\
+
+\begin{figure}
+\label{fig:make_menuconfig}
+\includegraphics[scale=0.5]{../res/make-menuconfig.png}
+\caption{make menuconfig}
+\end{figure}
+
+La figure~\ref{fig:make_menuconfig} montre le menu principal de configuration du noyau. Vous pouvez vous balader dans les sous-menus avec les flèches \textit{haut} et \textit{bas} ; entrez dans les sous-menu avec la touche \textit{Entrée} ; retourner au menu précédent avec la touche \textit{Échap} ; cocher/décocher les options avec la touche \textit{Espace}. Maintenant, quittez sans sauvegarder \textit{Ctrl-C} et \textit{No}\footnote{Si vous avez malencontreusement sauvegarder, supprimez le fichier \textbf{.config} via \lstset{language=sh}\lstinline{rm .config}}.\\
+
+Vous l'aurez vite compris, le noyau contient des milliers d'options et donc un nombre incalculable de configurations possibles ! Comment allons nous configurer notre noyau ?!? Quels sont les pilotes (\textit{drivers}) que nous devons compiler ?!?
+
+\clearpage
+\listoffigures
 
 \end{document}

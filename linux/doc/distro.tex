@@ -56,4 +56,41 @@ La règle \textit{Makefile}, ci-dessous, automatise le téléchargement et le d�
 
 Pour le reste de ce document, nous supperons que les fichiers sources sont dans le répertoire \textbf{./linux}.\\
 
+\subsection{make}
+
+Nous y voilà, nous sommes fin prêt pour compiler notre premier noyau ! Excitez, non ?!? Allez, on est parti. Ouvrez un terminal (si ce n'est pas déjà fait) et lancez la commande : \lstset{language=sh}\lstinline{cd linux && make} et...
+
+\begin{verbatim}
+$ make
+  HOSTCC  scripts/basic/fixdep
+  HOSTCC  scripts/kconfig/conf.o
+  SHIPPED scripts/kconfig/zconf.tab.c
+  SHIPPED scripts/kconfig/zconf.lex.c
+  SHIPPED scripts/kconfig/zconf.hash.c
+  HOSTCC  scripts/kconfig/zconf.tab.o
+  HOSTLD  scripts/kconfig/conf
+scripts/kconfig/conf  --silentoldconfig Kconfig
+***
+*** Configuration file ".config" not found!
+***
+*** Please run some configurator (e.g. "make oldconfig" or
+*** "make menuconfig" or "make xconfig").
+***
+scripts/kconfig/Makefile:37: recipe for target 'silentoldconfig' failed
+make[2]: *** [silentoldconfig] Error 1
+Makefile:531: recipe for target 'silentoldconfig' failed
+make[1]: *** [silentoldconfig] Error 2
+  SYSTBL  arch/x86/entry/syscalls/../../include/generated/asm/syscalls_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_64.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_x32.h
+  HOSTCC  arch/x86/tools/relocs_32.o
+  HOSTCC  arch/x86/tools/relocs_64.o
+  HOSTCC  arch/x86/tools/relocs_common.o
+  HOSTLD  arch/x86/tools/relocs
+make: *** No rule to make target 'include/config/auto.conf', needed by 'include/config/kernel.release'.  Stop.
+\end{verbatim}
+
+C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! \textit{Linux} est une noyau \textit{monolithique} \textit{modulaire} qui supporte plusieurs \textit{architectures} (promis, je ne voulais pas offenser). Comprenez simplement que le projet a besoin d'être configuré avant de pouvoir être compilé avec un vulgaire \lstset{language=sh}\lstinline{make}.\\
+
 \end{document}

@@ -11,6 +11,11 @@ all: doc
 doc kernel:
 	make -C $@
 
+runqemu: kernel/$(KBUILD_OUTPUT)/arch/x86/boot/bzImage
+	qemu-system-i386 -kernel $< \
+			 -append "console=ttyS0" \
+			 -chardev stdio,id=tty -device isa-serial,chardev=tty
+
 rootfs/init:
 	make -C src
 	cp src/helloworld $@

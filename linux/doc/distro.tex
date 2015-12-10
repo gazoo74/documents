@@ -93,4 +93,25 @@ make: *** No rule to make target 'include/config/auto.conf', needed by 'include/
 
 C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! \textit{Linux} est une noyau \textit{monolithique} \textit{modulaire} qui supporte plusieurs \textit{architectures} (promis, je ne voulais pas offenser). Comprenez simplement que le projet a besoin d'être configuré avant de pouvoir être compilé avec un vulgaire \lstset{language=sh}\lstinline{make}.\\
 
+\clearpage
+\section{Configuration}
+
+\textit{Linux} utilise le langage \textit{\href{https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt}{Kconfig}} pour décrire ses options de configurations. Ces options sont définis dans les fichiers \textbf{Kconfig}. Ils sont présent un peu partout dans les répertoires des fichiers sources, à l'image des \textit{Makefiles}.\\
+
+Il existe plusieurs \textit{front-ends} (interfaces) pour afficher le menu de configuration du noyau. Généralement, les développeurs (ou «~Kernel Hackers~») utilisent la bonne vielle interface en \textit{ncurses}, invoquée via le \textit{Makefile} et sa règle \textbf{menuconfig} (\lstset{language=sh}\lstinline{make menuconfig}). Il existe également d'autres interfaces comme \textbf{config} (en ligne de commande), \textbf{nconfig} (nouvelle interface \textit{ncurses}), \textbf{xconfig} (interface \textit{Qt}) et \textbf{gconfig} (interface \textit{GTK+}).\\
+
+Revenons à nos moutons... Lorsque notre première commande \lstset{language=sh}\lstinline{make} a échouée, vous avez surement remarqué le message suivant :
+\begin{verbatim}
+***
+*** Configuration file ".config" not found!
+***
+*** Please run some configurator (e.g. "make oldconfig" or
+*** "make menuconfig" or "make xconfig").
+***
+\end{verbatim}
+
+Le fichier \textbf{.config} est manquant ! Ce fichier contient la configuration du noyau. C'est une simple liste des options qui seront compilés ou non, intégré à l'image du noyau ou disponible via un module.\\
+
+Bien entendu, les sources du noyau viennent sans aucune configuration. Nous allons donc devoir générer cette configuration.\\
+
 \end{document}

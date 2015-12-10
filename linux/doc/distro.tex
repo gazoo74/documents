@@ -166,6 +166,12 @@ scripts/kconfig/conf  --silentoldconfig Kconfig
   SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_32.h
   SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_64.h
   SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_x32.h
+  HOSTCC  arch/x86/tools/relocs_32.o
+  HOSTCC  arch/x86/tools/relocs_64.o
+  HOSTCC  arch/x86/tools/relocs_common.o
+  HOSTLD  arch/x86/tools/relocs
+  CHK     include/config/kernel.release
+  UPD     include/config/kernel.release
 (...)
   LD      arch/x86/boot/setup.elf
   OBJCOPY arch/x86/boot/setup.bin

@@ -223,6 +223,109 @@ Deux nouveaux périphériques sont utilisables par le noyau :
 \item \textbf{ttySx} ou \textit{x} représente un entier définissant le numéro du port série.
 \end{itemize}
 
+\subsection{QEMU}
+
+Sur la ligne de commande de \textit{QEMU}, nous devons spécifier deux nouveaux paramètres :
+\begin{itemize}
+\item le premier pour émuler un port série (\textit{char-device}) et
+\item le second pour surcharger la ligne de commande du noyau afin de lui spécifier le port série émulé comme étant la console du noyau.
+\end{itemize}
+
+\subsubsection{Émulation d'un port série}
+
+L'émulation du port série se traduit par une série de deux paramètres :
+\begin{itemize}
+\item la création du périphérique de type \textit{isa-serial} : \lstset{language=sh}\lstinline{-device isa-serial,chardev=tty}
+\item l'association \lstset{language=sh}\lstinline{-chardev stdio,id=tty}
+\end{itemize}
+
+\subsubsection{Surcharge de la ligne de commande du noyau}
+
+Nous allons surcharger la ligne de commande du noyau en ajoutant une console via le paramètre \href{https://www.kernel.org/doc/Documentation/serial-console.txt}{\textbf{console=device,options}}.
+
+\lstset{language=sh}\lstinline{-append console=ttyS0}
+
+Et voilà !
+
+\begin{verbatim}
+$ qemu-system-i386 -kernel output/linux-x86/arch/x86/boot/bzImage -append "console=ttyS0" -serial stdio
+Linux version 4.3.0 (gazoo@localhost.localdomain) (gcc version 5.1.1 20150618 (Red Hat 5.1.1-4) (GCC) ) #4 Mon Dec 7 17:18:49 CET 2015
+x86/fpu: Legacy x87 FPU detected.
+x86/fpu: Using 'lazy' FPU context switches.
+e820: BIOS-provided physical RAM map:
+BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved
+BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved
+BIOS-e820: [mem 0x0000000000100000-0x0000000007fdffff] usable
+BIOS-e820: [mem 0x0000000007fe0000-0x0000000007ffffff] reserved
+BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved
+Notice: NX (Execute Disable) protection missing in CPU!
+e820: last_pfn = 0x7fe0 max_arch_pfn = 0x100000
+init_memory_mapping: [mem 0x00000000-0x000fffff]
+init_memory_mapping: [mem 0x07800000-0x07bfffff]
+init_memory_mapping: [mem 0x00100000-0x077fffff]
+init_memory_mapping: [mem 0x07c00000-0x07fdffff]
+127MB LOWMEM available.
+  mapped low ram: 0 - 07fe0000
+  low ram: 0 - 07fe0000
+Zone ranges:
+  Normal   [mem 0x0000000000001000-0x0000000007fdffff]
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000000001000-0x000000000009efff]
+  node   0: [mem 0x0000000000100000-0x0000000007fdffff]
+Initmem setup node 0 [mem 0x0000000000001000-0x0000000007fdffff]
+e820: [mem 0x08000000-0xfffbffff] available for PCI devices
+clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645519600211568 ns
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 32382
+Kernel command line: console=ttyS0
+PID hash table entries: 512 (order: -1, 2048 bytes)
+Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
+Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
+Initializing CPU#0
+Memory: 128016K/130552K available (730K kernel code, 96K rwdata, 112K rodata, 108K init, 196K bss, 2536K reserved, 0K cma-reserved)
+virtual kernel memory layout:
+    fixmap  : 0xfffe5000 - 0xfffff000   ( 104 kB)
+    vmalloc : 0xc87e0000 - 0xfffe3000   ( 888 MB)
+    lowmem  : 0xc0000000 - 0xc7fe0000   ( 127 MB)
+      .init : 0xc10ee000 - 0xc1109000   ( 108 kB)
+      .data : 0xc10b6cc9 - 0xc10ec0c0   ( 212 kB)
+      .text : 0xc1000000 - 0xc10b6cc9   ( 731 kB)
+Checking if this processor honours the WP bit even in supervisor mode...Ok.
+NR_IRQS:16 nr_irqs:16 16
+Console: colour VGA+ 80x25
+console [ttyS0] enabled
+tsc: Unable to calibrate against PIT
+tsc: No reference (HPET/PMTIMER) available
+tsc: Marking TSC unstable due to could not calculate TSC khz
+Calibrating delay loop... 306.94 BogoMIPS (lpj=613888)
+pid_max: default: 4096 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+CPU: Intel QEMU Virtual CPU version 2.3.1 (family: 0x6, model: 0x6, stepping: 0x3)
+Performance Events: Broken PMU hardware detected, using software events only.
+Failed to access perfctr msr (MSR c2 is 0)
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+clocksource: pit: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1601818034827 ns
+clocksource: Switched to clocksource pit
+platform rtc_cmos: registered platform RTC device (no PNP device found)
+Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+serial8250: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+serio: i8042 KBD port at 0x60,0x64 irq 1
+serio: i8042 AUX port at 0x60,0x64 irq 12
+mousedev: PS/2 mouse device common for all mice
+input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input0
+input: ImExPS/2 Generic Explorer Mouse as /devices/platform/i8042/serio1/input/input3
+Freeing unused kernel memory: 108K (c10ee000 - c1109000)
+Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/init.txt for guidance.
+Kernel Offset: disabled
+---[ end Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/init.txt for guidance.
+\end{verbatim}
+
+Un noyau, c'est bien... mais le noyau ne constitue en rien un système complet ! Il manque la partie applicative appelé \textit{user-space}.
+
 \clearpage
 \listoffigures
 

@@ -154,6 +154,38 @@ New value: CONFIG_CC_OPTIMIZE_FOR_SIZE=y
 
 Le noyau est maintenant configuré ! Un fichier \textbf{.config} est créé à la racine du projet. Ce fichier contient une configuration strictement minimale du noyau.
 
+\section{Compilation}
+
+Voilà, cette fois ci c'est la bonne : nous sommes paré à compiler notre noyau. Invoquons \lstset{language=sh}\lstinline{make} :\\
+
+\begin{verbatim}
+$ make
+  GEN     ./Makefile
+scripts/kconfig/conf  --silentoldconfig Kconfig
+  SYSTBL  arch/x86/entry/syscalls/../../include/generated/asm/syscalls_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_32.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_64.h
+  SYSHDR  arch/x86/entry/syscalls/../../include/generated/uapi/asm/unistd_x32.h
+  HOSTCC  arch/x86/tools/relocs_32.o
+  HOSTCC  arch/x86/tools/relocs_64.o
+  HOSTCC  arch/x86/tools/relocs_common.o
+  HOSTLD  arch/x86/tools/relocs
+  CHK     include/config/kernel.release
+  UPD     include/config/kernel.release
+(...)
+  LD      arch/x86/boot/setup.elf
+  OBJCOPY arch/x86/boot/setup.bin
+  OBJCOPY arch/x86/boot/vmlinux.bin
+  HOSTCC  arch/x86/boot/tools/build
+  BUILD   arch/x86/boot/bzImage
+Setup is 15452 bytes (padded to 15872 bytes).
+System is 342 kB
+CRC 61bf4503
+Kernel: arch/x86/boot/bzImage is ready  (#1)
+\end{verbatim}
+
+Notre tout premier noyau est disponible là : \textbf{arch/x86/boot/bzImage}.
+
 \clearpage
 \listoffigures
 

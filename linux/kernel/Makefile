@@ -6,7 +6,8 @@
 
 CFG := $(wildcard *.cfg)
 
-KBUILD_OUTPUT ?= $(CURDIR)/linux-x86
+O ?= linux-x86
+KBUILD_OUTPUT ?= $(CURDIR)/$(O)
 export KBUILD_OUTPUT
 
 all: kernel
@@ -19,7 +20,7 @@ $(KBUILD_OUTPUT)/arch/x86/boot/bzImage: $(KBUILD_OUTPUT)/.config
 $(KBUILD_OUTPUT)/.config: linux/Makefile $(CFG)
 	install -d $(@D)/
 	make -C linux tinyconfig
-	if [ -n "$(CFG)" ]; then cd linux && scripts/kconfig/merge_config.sh -O ../linux-x86 $@ $(patsubst %,$(CURDIR)/%,$(CFG)); fi
+	if [ -n "$(CFG)" ]; then cd linux && scripts/kconfig/merge_config.sh -O ../$(O) $@ $(patsubst %,$(CURDIR)/%,$(CFG)); fi
 
 linux/Makefile:
 	@echo "You need to provide your own kernel sources into the $(CURDIR)/$(@D) directory!" >&2

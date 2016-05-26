@@ -14,6 +14,11 @@ all: kernel
 
 kernel: $(KBUILD_OUTPUT)/arch/x86/boot/bzImage
 
+runqemu: $(KBUILD_OUTPUT)/arch/x86/boot/bzImage
+	qemu-system-i386 -kernel $< \
+			 -append "console=ttyS0" \
+			 -chardev stdio,id=tty -device isa-serial,chardev=tty
+
 $(KBUILD_OUTPUT)/arch/x86/boot/bzImage: $(KBUILD_OUTPUT)/.config
 	make -C linux $(@F)
 

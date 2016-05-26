@@ -241,15 +241,16 @@ Sur la ligne de commande de \textit{QEMU}, nous devons spécifier deux nouveaux 
 
 L'émulation du port série se traduit par une série de deux paramètres :
 \begin{itemize}
-\item la création du périphérique de type \textit{isa-serial} : \lstset{language=sh}\lstinline{-device isa-serial,chardev=tty}
-\item l'association \lstset{language=sh}\lstinline{-chardev stdio,id=tty}
+\item la création d'un périphérique de type \textit{character-device} associé à l'entrée/sortie standard (stdio) : \lstset{language=sh}\lstinline{-chardev stdio,id=tty}
+\item l'utilisation du pilote \textit{isa-serial} : \lstset{language=sh}\lstinline{-device isa-serial,chardev=tty}
 \end{itemize}
+L'association se périphérique/pilotes s'effectue via l'id/chardev (ici tty).
 
 \subsubsection{Surcharge de la ligne de commande du noyau}
 
-Nous allons surcharger la ligne de commande du noyau en ajoutant une console via le paramètre \href{https://www.kernel.org/doc/Documentation/serial-console.txt}{\textbf{console=device,options}}.
+Nous allons surcharger la ligne de commande du noyau en ajoutant une console via le paramètre \href{https://www.kernel.org/doc/Documentation/serial-console.txt}{\textbf{console=device,options}}.\\
 
-\lstset{language=sh}\lstinline{-append console=ttyS0}
+Sous \textit{QEMU}, la surcharge de la ligne de commande \lstset{language=sh}\lstinline{-append console=ttyS0}\\
 
 Et voilà !
 

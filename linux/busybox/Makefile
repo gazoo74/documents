@@ -4,6 +4,10 @@
 # Licensed under the MIT license.
 #
 
+export CONFIG_STATIC = y
+export CONFIG_EXTRA_CFLAGS = "-m32"
+export CONFIG_EXTRA_LDFLAGS = "-m32"
+
 .PHONY: busybox
 
 all: busybox
@@ -11,7 +15,8 @@ all: busybox
 busybox: busybox/busybox
 
 busybox/busybox: busybox/.config
-	make -C busybox CONFIG_STATIC=y CONFIG_EXTRA_CFLAGS="-m32" CONFIG_EXTRA_LDFLAGS="-m32"
+	make -C busybox CONFIG_STATIC=y
+#	make -C busybox CONFIG_STATIC=y CONFIG_EXTRA_CFLAGS="-m32" CONFIG_EXTRA_LDFLAGS="-m32"
 
 busybox/.config:
 	yes "" | make -C busybox oldconfig
@@ -21,20 +26,24 @@ busybox/Makefile:
 	@echo "Have a look at https://www.busybox.net! or run one of the commands below:" >&2
 	@echo "$$ git clone git://git.busybox.net/busybox $(CURDIR)/$(@D)" >&2
 	@echo "or" >&2
-	@echo "$$ make $(@D)_download" >&2
+	@echo "$$ make download" >&2
 	@exit 1
 
-busybox_download:
+download:
 	wget -qO- https://busybox.net \
 		| sed -n '/<li><b>/,/<\/li>/s,.*<a.*href="\(.*\).tar.bz2">BusyBox \(.*\)</a>.*,wget -qO- \1.tar.bz2 | tar xvj \&\& ln -sf busybox-\2 busybox \&\& exit 0,p' \
 		| sh
 
-busybox_menuconfig:
-
 menuconfig: busybox_menuconfig
 
+
+install: busybox_install
+
+busybox_install: busybox/busybox
+
 busybox_%:
-	make -C busybox $*
+	make -C busybox $* CONFIG_STATIC=y
+#	make -C busybox $* CONFIG_STATIC=y CONFIG_EXTRA_CFLAGS="-m32" CONFIG_EXTRA_LDFLAGS="-m32"
 
 clean:
 	-make -C busybox clean
@@ -43,4 +52,4 @@ mrproper:
 	-make -C busybox mrproper
 
 distclean:
-	rm -f busybox busybox*/ 
+	rm -f busybox busybox-*/

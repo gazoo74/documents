@@ -1,0 +1,148 @@
+$ make tinyconfig
+scripts/kconfig/conf  --allnoconfig Kconfig
+#
+# configuration written to .config
+#
+Using .config as base
+Merging ./kernel/configs/tiny.config
+Value of CONFIG_CC_OPTIMIZE_FOR_SIZE is redefined by fragment ./kernel/configs/tiny.config:
+Previous value: # CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+New value: CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+
+Value of CONFIG_KERNEL_XZ is redefined by fragment ./kernel/configs/tiny.config:
+Previous value: # CONFIG_KERNEL_XZ is not set
+New value: CONFIG_KERNEL_XZ=y
+
+Value of CONFIG_OPTIMIZE_INLINING is redefined by fragment ./kernel/configs/tiny.config:
+Previous value: # CONFIG_OPTIMIZE_INLINING is not set
+New value: CONFIG_OPTIMIZE_INLINING=y
+
+Value of CONFIG_SLOB is redefined by fragment ./kernel/configs/tiny.config:
+Previous value: # CONFIG_SLOB is not set
+New value: CONFIG_SLOB=y
+
+Merging ./arch/x86/configs/tiny.config
+Value of CONFIG_NOHIGHMEM is redefined by fragment ./arch/x86/configs/tiny.config:
+Previous value: # CONFIG_NOHIGHMEM is not set
+New value: CONFIG_NOHIGHMEM=y
+
+#
+# merged configuration written to ./.config (needs make)
+#
+scripts/kconfig/conf  --oldconfig Kconfig
+.config:900:warning: override: KERNEL_XZ changes choice state
+.config:902:warning: override: SLOB changes choice state
+.config:903:warning: override: NOHIGHMEM changes choice state
+*
+* Restart config...
+*
+*
+* Processor type and features
+*
+DMA memory allocation support (ZONE_DMA) [N/y/?] n
+Symmetric multi-processing support (SMP) [N/y/?] n
+Processor feature human-readable names (X86_FEATURE_NAMES) [N/y/?] n
+Support for extended (non-PC) x86 platforms (X86_EXTENDED_PLATFORM) [N/y/?] n
+Eurobraille/Iris poweroff module (X86_32_IRIS) [N/y/?] n
+Single-depth WCHAN output (SCHED_OMIT_FRAME_POINTER) [N/y/?] n
+*
+* Linux guest support
+*
+Linux guest support (HYPERVISOR_GUEST) [N/y/?] n
+Processor family
+  1. 486 (M486)
+  2. 586/K5/5x86/6x86/6x86MX (M586)
+  3. Pentium-Classic (M586TSC)
+  4. Pentium-MMX (M586MMX)
+> 5. Pentium-Pro (M686)
+  6. Pentium-II/Celeron(pre-Coppermine) (MPENTIUMII)
+  7. Pentium-III/Celeron(Coppermine)/Pentium-III Xeon (MPENTIUMIII)
+  8. Pentium M (MPENTIUMM)
+  9. Pentium-4/Celeron(P4-based)/Pentium-4 M/older Xeon (MPENTIUM4)
+  10. K6/K6-II/K6-III (MK6)
+  11. Athlon/Duron/K7 (MK7)
+  12. Opteron/Athlon64/Hammer/K8 (MK8)
+  13. Crusoe (MCRUSOE)
+  14. Efficeon (MEFFICEON)
+  15. Winchip-C6 (MWINCHIPC6)
+  16. Winchip-2/Winchip-2A/Winchip-3 (MWINCHIP3D)
+  17. AMD Elan (MELAN)
+  18. GeodeGX1 (MGEODEGX1)
+  19. Geode GX/LX (MGEODE_LX)
+  20. CyrixIII/VIA-C3 (MCYRIXIII)
+  21. VIA C3-2 (Nehemiah) (MVIAC3_2)
+  22. VIA C7 (MVIAC7)
+  23. Core 2/newer Xeon (MCORE2)
+  24. Intel Atom (MATOM)
+choice[1-24]: 5
+Generic x86 support (X86_GENERIC) [N/y/?] n
+PentiumPro memory ordering errata workaround (X86_PPRO_FENCE) [N/y/?] n
+*
+* Supported processor vendors
+*
+Supported processor vendors (PROCESSOR_SELECT) [N/y/?] n
+HPET Timer Support (HPET_TIMER) [N/y/?] n
+Enable DMI scanning (DMI) [N/y/?] n
+Preemption Model
+> 1. No Forced Preemption (Server) (PREEMPT_NONE)
+  2. Voluntary Kernel Preemption (Desktop) (PREEMPT_VOLUNTARY)
+  3. Preemptible Kernel (Low-Latency Desktop) (PREEMPT)
+choice[1-3]: 1
+Local APIC support on uniprocessors (X86_UP_APIC) [N/y/?] n
+Machine Check / overheating reporting (X86_MCE) [N/y/?] n
+Legacy VM86 support (X86_LEGACY_VM86) [N/y/?] n
+Toshiba Laptop support (TOSHIBA) [N/y/?] n
+Dell i8k legacy laptop support (I8K) [N/y/?] n
+Enable X86 board specific fixups for reboot (X86_REBOOTFIXUPS) [N/y/?] n
+CPU microcode loading support (MICROCODE) [N/y/?] n
+/dev/cpu/*/msr - Model-specific register support (X86_MSR) [N/y/?] n
+/dev/cpu/*/cpuid - CPU information support (X86_CPUID) [N/y/?] n
+High Memory Support
+> 1. off (NOHIGHMEM)
+  2. 4GB (HIGHMEM4G)
+  3. 64GB (HIGHMEM64G)
+choice[1-3]: 1
+Memory split
+> 1. 3G/1G user/kernel split (VMSPLIT_3G)
+  2. 3G/1G user/kernel split (for full 1G low memory) (VMSPLIT_3G_OPT)
+  3. 2G/2G user/kernel split (VMSPLIT_2G)
+  4. 2G/2G user/kernel split (for full 2G low memory) (VMSPLIT_2G_OPT)
+  5. 1G/3G user/kernel split (VMSPLIT_1G)
+choice[1-5?]: 1
+PAE (Physical Address Extension) Support (X86_PAE) [N/y/?] (NEW) 
+Memory model
+> 1. Flat Memory (FLATMEM_MANUAL)
+  2. Sparse Memory (SPARSEMEM_MANUAL)
+choice[1-2]: 1
+Allow for memory compaction (COMPACTION) [N/y/?] n
+Enable KSM for page merging (KSM) [N/y/?] n
+Low address space to protect from user allocation (DEFAULT_MMAP_MIN_ADDR) [4096] 4096
+Transparent Hugepage Support (TRANSPARENT_HUGEPAGE) [N/y/?] n
+Enable cleancache driver to cache clean pages if tmem is present (CLEANCACHE) [N/y/?] n
+Contiguous Memory Allocator (CMA) [N/y/?] n
+Common API for compressed memory storage (ZPOOL) [N/y/?] n
+Low density storage for compressed pages (ZBUD) [N/y/?] n
+Memory allocator for compressed pages (ZSMALLOC) [N/y/?] n
+Check for low memory corruption (X86_CHECK_BIOS_CORRUPTION) [N/y/?] n
+Amount of low memory, in kilobytes, to reserve for the BIOS (X86_RESERVE_LOW) [64] 64
+MTRR (Memory Type Range Register) support (MTRR) [N/y/?] n
+x86 architectural random number generator (ARCH_RANDOM) [N/y/?] n
+Supervisor Mode Access Prevention (X86_SMAP) [N/y/?] n
+Intel MPX (Memory Protection Extensions) (X86_INTEL_MPX) [N/y/?] n
+Enable seccomp to safely compute untrusted bytecode (SECCOMP) [N/y/?] n
+Timer frequency
+  1. 100 HZ (HZ_100)
+> 2. 250 HZ (HZ_250)
+  3. 300 HZ (HZ_300)
+  4. 1000 HZ (HZ_1000)
+choice[1-4?]: 2
+kexec system call (KEXEC) [N/y/?] n
+Physical address where the kernel is loaded (PHYSICAL_START) [0x1000000] 0x1000000
+Build a relocatable kernel (RELOCATABLE) [N/y/?] n
+Alignment value to which kernel should be aligned (PHYSICAL_ALIGN) [0x200000] 0x200000
+Disable the 32-bit vDSO (needed for glibc 2.3.3) (COMPAT_VDSO) [N/y/?] n
+Built-in kernel command line (CMDLINE_BOOL) [N/y/?] n
+Enable the LDT (local descriptor table) (MODIFY_LDT_SYSCALL) [N/y/?] n
+#
+# configuration written to .config
+#

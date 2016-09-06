@@ -41,9 +41,9 @@
 
 \section{Première compilation}
 
-Entrons directement dans le vif du sujet et attaquons par la compilation d'un noyau \textit{Linux} ! Nous allons compiler un noyau pour l'architecture hôte : la machine sur laquelle vous travaillez actuellement\footnote{Dans un premier temps, je supposerai que vous travailler sur une machine à base de processeur \textit{Intel x86}. Les extraits de code disponibles à travers ce document sont donnés pour cette architecture. Si vous travaillez sur une autre architecture (exemple : \textit{PowerPC} (\textit{PPC})), vous devrez adapter ces extraits pour votre machine. J'adapterai ces extraits plus tard pour qu'ils soient génériques et puissent être utilisés sur n'importe quelle architecture.}.\\
+Entrons directement dans le vif du sujet et attaquons par la compilation d'un noyau \textit{Linux} ! Nous allons compiler un noyau pour l'architecture hôte : la machine sur laquelle vous travaillez actuellement\footnote{Dans un premier temps, je supposerai que vous travaillez sur une machine à base de processeur \textit{Intel x86}. Les extraits de code disponibles à travers ce document sont donnés pour cette architecture. Si vous travaillez sur une autre architecture (exemple : \textit{PowerPC} (\textit{PPC})), vous devrez adapter ces extraits pour votre machine. J'adapterai ces extraits plus tard pour qu'ils soient génériques et puissent être utilisés sur n'importe quelle architecture.}.\\
 
-Je n'aborderai pas ici les concepts de la \textit{compilation croisée}. «~La compilation quoi ?!? croisée ?!?~». Hum... le plus simple est de consulter la page \textit{Wikipédia} sur la \textit{compilation croisée}\footnote{\url{https://fr.wikipedia.org/wiki/Compilateur\#Compilation\_crois.C3.A9e}}. Grosso modo, on compile un programme destiné à être exécuté sur une architecture cible autre que l'architecture hôte, celle sur laquelle on est entrain de compiler. Vous n'y êtes toujours pas ?!? Plus simplement, on compile quelque chose sur notre \textit{PC} à base de processeur \textit{Intel} (\textit{x86}) destiné à être utiliser sur un \textit{Raspberry-PI} (\textit{ARM}). C'est bon vous y êtes ?!? Avec un exemple c'est toujours plus facile à comprendre...\\
+Je n'aborderai pas ici les concepts de la \textit{compilation croisée}. «~La compilation quoi ?!? croisée ?!?~». Hum... le plus simple est de consulter la page \textit{Wikipédia} sur la \textit{compilation croisée}\footnote{\url{https://fr.wikipedia.org/wiki/Compilateur\#Compilation\_crois.C3.A9e}}. Grosso modo, on compile un programme destiné à être exécuté sur une architecture cible autre que l'architecture hôte, celle sur laquelle on est entrain de compiler. Vous n'y êtes toujours pas ?!? Plus simplement, on compile quelque-chose sur notre \textit{PC} à base de processeur \textit{Intel} (\textit{x86}) destiné à être utilisé sur un \textit{Raspberry-PI} (\textit{ARM}). C'est bon vous y êtes ?!? Avec un exemple c'est toujours plus facile à comprendre...\\
 
 Vous êtes prêts ?!? Alors c'est parti !\\
 
@@ -56,11 +56,11 @@ La règle \textit{Makefile}, ci-dessous, automatise le téléchargement et le d�
 \lstset{language=make}
 \lstinputlisting[firstline=32,lastline=35,breaklines]{../kernel/Makefile}
 
-Pour le reste de ce document, nous supperons que les fichiers sources sont dans le répertoire \textbf{./linux}.\\
+Pour le reste de ce document, nous supposerons que les fichiers sources sont dans le répertoire \textbf{./linux}.\\
 
 \subsection{make}
 
-Nous y voilà, nous sommes fin prêt pour compiler notre premier noyau ! Excitez, non ?!? Allez, on est parti. Ouvrez un terminal (si ce n'est pas déjà fait) et lancez la commande : \lstset{language=sh}\lstinline{cd linux && make} et...
+Nous y voilà, nous sommes fin prêts pour compiler notre premier noyau ! Excité, non ?!? Allez, on est parti. Ouvrez un terminal (si ce n'est pas déjà fait) et lancez la commande : \lstset{language=sh}\lstinline{cd linux && make} et...
 
 \begin{verbatim}
 $ make
@@ -98,11 +98,11 @@ C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple 
 \clearpage
 \section{Configuration}
 
-\textit{Linux} utilise le langage \textit{\href{https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt}{Kconfig}} pour décrire ses options de configurations. Ces options sont définis dans les fichiers \textbf{Kconfig}. Ils sont présent un peu partout dans les répertoires des fichiers sources, à l'image des \textit{Makefiles}.\\
+\textit{Linux} utilise le langage \textit{\href{https://www.kernel.org/doc/Documentation/kbuild/kconfig-language.txt}{Kconfig}} pour décrire ses options de configurations. Ces options sont définies dans les fichiers \textbf{Kconfig}. Ils sont présents un peu partout dans les répertoires des fichiers sources, à l'image des \textit{Makefiles}.\\
 
 Il existe plusieurs \textit{front-ends} (interfaces) pour afficher le menu de configuration du noyau. Généralement, les développeurs (ou «~Kernel Hackers~») utilisent la bonne vielle interface en \textit{ncurses}, invoquée via le \textit{Makefile} et sa règle \textbf{menuconfig} (\lstset{language=sh}\lstinline{make menuconfig}). Il existe également d'autres interfaces comme \textbf{config} (en ligne de commande), \textbf{nconfig} (nouvelle interface \textit{ncurses}), \textbf{xconfig} (interface \textit{Qt}) et \textbf{gconfig} (interface \textit{GTK+}).\\
 
-Revenons à nos moutons... Lorsque notre première commande \lstset{language=sh}\lstinline{make} a échouée, vous avez surement remarqué le message suivant :
+Revenons à nos moutons... Lorsque notre première commande \lstset{language=sh}\lstinline{make} a échouée, vous avez sûrement remarqué le message suivant :
 \begin{verbatim}
 ***
 *** Configuration file ".config" not found!
@@ -112,7 +112,7 @@ Revenons à nos moutons... Lorsque notre première commande \lstset{language=sh}
 ***
 \end{verbatim}
 
-Le fichier \textbf{.config} est manquant ! Ce fichier contient la configuration du noyau. C'est une simple liste des options qui seront compilés ou non, intégré à l'image du noyau ou disponible via un module.\\
+Le fichier \textbf{.config} est manquant ! Ce fichier contient la configuration du noyau. C'est une simple liste des options qui seront compilées ou non, intégrées à l'image du noyau ou disponibles via un module.\\
 
 Bien entendu, les sources du noyau viennent sans aucune configuration. Nous allons donc devoir générer cette configuration.\\
 
@@ -126,13 +126,13 @@ Allez, on se fait une petite frayeur : configurons notre noyau en exécutant la 
 \caption{make menuconfig}
 \end{figure}
 
-La figure~\ref{fig:make_menuconfig} montre le menu principal de configuration du noyau. Vous pouvez vous balader dans les sous-menus avec les flèches \textit{haut} et \textit{bas} ; entrez dans les sous-menu avec la touche \textit{Entrée} ; retourner au menu précédent avec la touche \textit{Échap} ; cocher/décocher les options avec la touche \textit{Espace}. Maintenant, quittez sans sauvegarder \textit{Ctrl-C} et \textit{No}\footnote{Si vous avez malencontreusement sauvegarder, supprimez le fichier \textbf{.config} via \lstset{language=sh}\lstinline{rm .config}}.\\
+La figure~\ref{fig:make_menuconfig} montre le menu principal de configuration du noyau. Vous pouvez vous balader dans les sous-menus avec les flèches \textit{haut} et \textit{bas} ; entrer dans les sous-menu avec la touche \textit{Entrée} ; retourner au menu précédent avec la touche \textit{Échap} ; cocher/décocher les options avec la touche \textit{Espace}. Maintenant, quittez sans sauvegarder \textit{Ctrl-C} et \textit{No}\footnote{Si vous avez malencontreusement sauvegardé, supprimez le fichier \textbf{.config} via \lstset{language=sh}\lstinline{rm .config}}.\\
 
-Vous l'aurez vite compris, le noyau contient des milliers d'options et donc un nombre incalculable de configurations possibles ! Comment allons nous configurer notre noyau ?!? Quels sont les pilotes (\textit{drivers}) que nous devons compiler ?!?
+Vous l'aurez vite compris, le noyau contient des milliers d'options et donc un nombre incalculable de configurations possibles ! Comment allons-nous configurer notre noyau ?!? Quels sont les pilotes (\textit{drivers}) que nous devons compiler ?!?
 
 \subsection{tinyconfig}
 
-Nous allons créer une configuration minimal du noyau. Pour cela, nous invoquons la règle \textbf{tinyconfig}.
+Nous allons créer une configuration minimale du noyau. Pour cela, nous invoquons la règle \textbf{tinyconfig}.
 
 \begin{verbatim}
 $ make tinyconfig
@@ -156,7 +156,7 @@ Le noyau est maintenant configuré ! Un fichier \textbf{.config} est créé à l
 
 \section{Compilation}
 
-Voilà, cette fois ci c'est la bonne : nous sommes paré à compiler notre noyau. Invoquons \lstset{language=sh}\lstinline{make} :\\
+Voilà, cette fois-ci c'est la bonne : nous sommes parés à compiler notre noyau. Invoquons \lstset{language=sh}\lstinline{make} :\\
 
 \begin{verbatim}
 $ make

@@ -121,9 +121,9 @@ Bien entendu, les sources du noyau viennent sans aucune configuration. Nous allo
 Allez, on se fait une petite frayeur : configurons notre noyau en exécutant la commande \lstinline{make menuconfig}\footnote{Nous allons avoir besoin du paquet de développement de \textit{ncurses}. Si vous n'y arrivez pas, passez simplement cette partie, elle n'est pas essentielle}.\\
 
 \begin{figure}
-\label{fig:make_menuconfig}
 \includegraphics[scale=0.5]{../res/make-menuconfig.png}
 \caption{make menuconfig}
+\label{fig:make_menuconfig}
 \end{figure}
 
 La figure~\ref{fig:make_menuconfig} montre le menu principal de configuration du noyau. Vous pouvez vous balader dans les sous-menus avec les flèches \textit{haut} et \textit{bas} ; entrer dans les sous-menu avec la touche \textit{Entrée} ; retourner au menu précédent avec la touche \textit{Échap} ; cocher/décocher les options avec la touche \textit{Espace}. Maintenant, quittez sans sauvegarder \textit{Ctrl-C} et \textit{No}\footnote{Si vous avez malencontreusement sauvegardé, supprimez le fichier \textbf{.config} via \lstset{language=sh}\lstinline{rm .config}}.\\

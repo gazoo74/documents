@@ -16,13 +16,13 @@
 % This work consists of the file distro.tex.
 
 \documentclass[a4paper]{article}
-\usepackage{caption}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{listings}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
+\usepackage{listings}
+\usepackage{caption}
 
 \lstloadlanguages{[ANSI]C,sh,make}
 
@@ -62,7 +62,7 @@ Pour le reste de ce document, nous supposerons que les fichiers sources sont dan
 
 Nous y voilà, nous sommes fin prêts pour compiler notre premier noyau ! Excité, non ?!? Allez, on est parti. Ouvrez un terminal (si ce n'est pas déjà fait) et lancez la commande : \lstset{language=sh}\lstinline{cd linux && make} et...
 
-\begin{verbatim}
+\begin{lstlisting}[breaklines,basicstyle=\ttfamily]
 $ make
   HOSTCC  scripts/basic/fixdep
   HOSTCC  scripts/kconfig/conf.o
@@ -91,9 +91,9 @@ make[1]: *** [silentoldconfig] Error 2
   HOSTCC  arch/x86/tools/relocs_common.o
   HOSTLD  arch/x86/tools/relocs
 make: *** No rule to make target 'include/config/auto.conf', needed by 'include/config/kernel.release'.  Stop.
-\end{verbatim}
+\end{lstlisting}
 
-C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! \textit{Linux} est une noyau \textit{monolithique} \textit{modulaire} qui supporte plusieurs \textit{architectures} (promis, je ne voulais pas offenser). Comprenez simplement que le projet a besoin d'être configuré avant de pouvoir être compilé avec un vulgaire \lstset{language=sh}\lstinline{make}.\\
+C'était trop beau pour être vrai... compiler son noyau n'est pas aussi simple ! \textit{Linux} est un noyau \textit{monolithique modulaire} qui supporte plusieurs \textit{architectures} (promis, je ne voulais pas offenser). Comprenez simplement que le projet a besoin d'être configuré avant de pouvoir être compilé par un vulgaire \lstset{language=sh}\lstinline{make}.\\
 
 \clearpage
 \section{Configuration}
